@@ -1,0 +1,60 @@
+// constants
+    // image-related constants
+    var IMAGE_LINK = "https://upload.wikimedia.org/wikipedia/en/d/db/Twenty_One_Pilots_-_Clancy.png"
+    var IMAGE_HEIGHT = 400;
+    var IMAGE_WIDTH = 400;
+    var IMAGE_X_COORDINATE = 0;
+    var IMAGE_Y_COORDINATE = 0;
+
+    // pixel-related constants
+    var RED = 0;
+    var GREEN = 1;
+    var BLUE = 2;
+
+    // image-loading time in milliseconds
+    var IMAGE_LOADING_TIME = 2000;
+
+function start () {
+    var image = new WebImage(IMAGE_LINK);
+    image.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+    image.setPosition(IMAGE_X_COORDINATE, IMAGE_Y_COORDINATE)
+
+    add(image);
+
+    setTimeout(function(){
+        monochromeFilter(image);
+
+    for (var x = 0; x < image.getWidth(); x++) {
+        for (var y = 0; y < image.getHeight(); y++) {
+            var pixel = image.getPixel(x, y);
+            monochromeFilter(pixel);
+
+            image.setRed(x, y, pixel[RED]);
+            image.setGreen(x, y, pixel[GREEN]);
+            image.setBlue(x, y, pixel[BLUE]);
+        }
+    }
+    }, IMAGE_LOADING_TIME)
+}
+
+function monochromeFilter(pixel) {
+    var red = pixel[RED];
+    var green = pixel[GREEN];
+    var blue = pixel[BLUE];
+
+    if (red >= 128 && green <= 128 && blue <= 128) {
+        var newRed = 255;
+        var newGreen = 255;
+        var newBlue = 255;
+    } else {
+        var newRed = 0;
+        var newGreen = 0;
+        var newBlue = 0;
+    }
+
+    pixel[RED] = newRed;
+    pixel[GREEN] = newGreen;
+    pixel[BLUE] = newBlue;
+
+    return pixel;
+}
